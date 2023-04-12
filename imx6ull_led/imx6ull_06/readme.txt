@@ -1,0 +1,3 @@
+用总线写
+platform_device_register
+platform_driver_register

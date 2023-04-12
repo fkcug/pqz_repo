@@ -1,0 +1,1 @@
+加了board_init, board_ctl
