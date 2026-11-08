@@ -1,0 +1,41 @@
+#include "stm32f10x.h"                  // Device header
+#include "Delay.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include "Key.h"
+#include "OLED.h"
+
+TaskHandle_t myTaskHandler;
+
+void myTask(void *arg)
+{
+	while(1)
+	{
+		GPIO_ResetBits(GPIOC, GPIO_Pin_13);
+	    vTaskDelay(500);
+	    GPIO_SetBits(GPIOC, GPIO_Pin_13);
+	    vTaskDelay(500);
+	}
+}
+
+int main(void)
+{
+	GPIO_InitTypeDef GPIO_InitStructure;
+	char str[] = "FreeRtos!";
+
+//	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
+
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(GPIOC, &GPIO_InitStructure);
+
+	OLED_Init();
+	OLED_ShowString(1, 1, "FreeRtos Start");
+
+	xTaskCreate(myTask, "myTask", 128, NULL, 2, &myTaskHandler);
+	vTaskStartScheduler();
+
+	while(1);
+}
