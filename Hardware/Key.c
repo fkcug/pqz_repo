@@ -1,11 +1,6 @@
 #include "stm32f10x.h"                  // Device header
 #include "Delay.h"
 
-/**
-  * 函    数：按键初始化
-  * 参    数：无
-  * 返 回 值：无
-  */
 void Key_Init(void)
 {
 	/*开启时钟*/
